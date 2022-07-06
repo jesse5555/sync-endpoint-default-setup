@@ -1,0 +1,39 @@
+name: Run Type Checks
+on:
+  push:
+    branches: 
+      - master
+      - development
+      - outreachy-2022
+  pull_request:
+    branches:
+      - master
+      - development
+      - outreachy-2022    
+  workflow_dispatch:
+
+jobs:
+  type-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: create requirements file
+      run: |
+        pip3 freeze > requirements.txt
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install typer
+    - name: Code Formatting Tests
+      working-directory: ${{ github.workspace }}
+      run: |
+        make lint
+    - name: Type Checking
+      working-directory: ${{ github.workspace }}
+      run: |
+        make types
