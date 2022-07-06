@@ -29,10 +29,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install typer
-    - name: Code Formatting Tests
-      working-directory: ${{ github.workspace }}
-      run: |
-        make lint
     - name: Type Checking
       working-directory: ${{ github.workspace }}
       run: |
